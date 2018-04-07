@@ -6,13 +6,6 @@ from collections import defaultdict
 STATUSDICT = defaultdict(lambda : None)
 
 
-def _update_statusdict(five_digit_number, status):
-    ''' Whaddaya think it does?
-    '''
-    STATUSDICT[five_digit_number] = status
-
-
-
 def _store_statusdict(statusdict):
     ''' Pickles the status data
     '''
