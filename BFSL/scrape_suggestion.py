@@ -79,7 +79,7 @@ def format_page(page_response, page):
     row['subtitle'] = subtitle
     row['start_date'] = start_date
     row['end_date'] = end_date
-    row['supporters'] = supporters
+    row['supporters'] = str(supporters)
     row['text'] = text
     row['page'] = page
 
@@ -152,8 +152,8 @@ def list_from_integers(first, last, thinlist = True):
     return all_ints
 
 
-def MAIN(save = True):
-    scrapelist = list_from_integers(5, 855)
+def MAIN(save = True, thinlist = True):
+    scrapelist = list_from_integers(5, 855, thinlist = thinlist)
     data = scrape(scrapelist)
 
     if save:
@@ -161,4 +161,4 @@ def MAIN(save = True):
 
     print('DONE')
 
-MAIN()
+MAIN(thinlist = False)

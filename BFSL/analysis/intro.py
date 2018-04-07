@@ -4,7 +4,13 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
-data = pd.read_csv('BFSL.csv', na_values = ['-'])
+from datetime import datetime
+from datetime import timedelta
+
+data = pd.read_csv('BFSL.csv', na_values = ['-'], dtype = {'supporters':str})
+
+# convert supporters to string to remove the . and then back tu float
+data['supporters'] = pd.to_numeric(data['supporters'].str.replace('.',''))
 
 # ==============================================================================
 # this section is all about getting the date variables to make sense
@@ -51,6 +57,24 @@ data['end_date'] = pd.to_datetime(data[['year','month','day']], errors = 'coerce
 data.drop(['day', 'month','year'], axis = 1)
 
 
+date = datetime.today()
+today = pd.to_datetime('-'.join(map(str, [date.year, date.month, date.day])), format = '%Y-%m-%d')
+
+
+def upper_time_limit(x):
+    ''' Enforces the upper timedelta of 180 days for a suggestion
+    '''
+    if x > timedelta(180):
+        return timedelta(180)
+    else:
+        return x
+
+# running days
+data['running_days'] = today - data['start_date']
+data['running_days'] = data['running_days'].apply(upper_time_limit)
+
+# length of main text
+data['text_length'] = data['text'].apply(len)
 # ==============================================================================
 # this plots a bunch of kernel densities to get a first impression
 # of the continous variables
@@ -62,23 +86,25 @@ sns.kdeplot(data['start_date'].dt.day.dropna(), shade = True, cut = 1, color = '
 ax1.set_title('Start day')
 ax1.legend_.remove()
 
-sns.kdeplot(data['end_date'].dt.day.dropna(), shade = True, cut = 1, color = 'g', ax = ax2)
-ax2.set_title('End day')
+sns.kdeplot(data['running_days'].dt.days, shade = True, cut = 1, color = 'g', ax = ax2)
+ax2.set_title('Running days')
 ax2.legend_.remove()
 
 sns.kdeplot(data['supporters'], shade = True, cut = 0, ax = ax3)
 ax3.set_title('Supporter count')
 ax3.legend_.remove()
 
-fig.legend(['start date','end date','Supporter count density'], loc = 'lower center', ncol = 3, bbox_to_anchor = (0.5, -.02))
+fig.legend(['start date','Running days','Supporter count density'], loc = 'lower center', ncol = 3, bbox_to_anchor = (0.5, -.018))
 
 plt.suptitle('Densities', fontsize = 20)
 plt.tight_layout()
 plt.subplots_adjust(top=0.85)
+plt.savefig('figures/Densities.png')
 plt.show()
 
+# This is a jointplot of running days and
+(sns.jointplot(data['running_days'].dt.days, data['supporters'], kind = 'kde', color = 'm', space = 0)
+).set_axis_labels('Running days', 'Supporters')
 
-
-# ==============================================================================
-# Now lets start looking at the text data
-# ==============================================================================
+plt.savefig('figures/Jointplot.png')
+plt.show()
