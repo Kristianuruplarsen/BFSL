@@ -52,19 +52,19 @@ def format_page(page_response, page):
     article = soup.find_all('div', attrs = {'class':'article'})[0]
 
     row = {}
-# ~~~~ TITLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # ~~~~ TITLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     title = article.find_all('span', attrs = {'data-reactid':'5'})[0].text
-# ~~~~ SUBTITLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # ~~~~ SUBTITLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     try:
         subtitle = article.find_all('span', attrs = {'data-reactid':'44'})[0].text
     except:
             subtitle = article.find_all('span', attrs = {'data-reactid':'49'})[0].text
-# ~~~~ TEXT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # ~~~~ TEXT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     try:
         text = article.find_all('div', attrs = {'class':'public-DraftEditor-content'})[1].text
     except:
             text = article.find_all('div', attrs = {'class':'public-DraftEditor-content'})[2].text
-# ~~~~ START/END DATE & SUPPORTERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # ~~~~ START/END DATE & SUPPORTERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     try:
         start_date = article.find_all('strong', attrs = {'data-reactid':'11'})[0].text
         end_date = article.find_all('strong', attrs = {'data-reactid':'14'})[0].text
