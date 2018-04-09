@@ -108,3 +108,7 @@ plt.show()
 
 plt.savefig('figures/Jointplot.png')
 plt.show()
+
+
+
+data.to_csv('BFSL_updated.csv')
