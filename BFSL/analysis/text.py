@@ -20,3 +20,6 @@ plt.legend(['Sentiment'])
 plt.title('Distribution of proposal sentiments')
 plt.savefig('figures/Sentiment.png')
 plt.show()
+
+data['sentiment_subtitle'] = data['subtitle'].apply(afinn.score)
+sns.lmplot('sentiment', 'sentiment_subtitle', data = data)
